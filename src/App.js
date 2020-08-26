@@ -7,24 +7,23 @@ import {
 } from "react-router-dom";
 import Login from "./pages/login";
 import Navbar from "./components/navbar";
+import Playlist from "./pages/playlist";
 
 export default function App() {
-const [estadoConUsuario,setEstadoConUsuario] = useState(false); 
+const [estadoConUsuario,setEstadoConUsuario] = useState(true); 
   return (
     <Router>
       <div>
-      
-
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Navbar estado={estadoConUsuario}></Navbar>
         <Switch>
           <Route path="/playlist">
-          {estadoConUsuario && "playlist"}
+          {estadoConUsuario && < Playlist> </Playlist>}
           {!estadoConUsuario && "error"}
           </Route>
-          <Route path="/"exact>
-            <Login></Login> 
+          <Route path="/">
+            <Login/>
           </Route>
         </Switch>
       </div>
