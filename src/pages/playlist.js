@@ -16,6 +16,9 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+
 
 
 
@@ -33,6 +36,7 @@ const [searchSong,setSearchSong] = React.useState("");
 //searchSong->es la cancion buscada(ingreso el usuario)
 //setSearchSong->es la funcion que permite guardar la cancio buscada
 
+const [myPlaylist, setMyPlaylist] = React.useState([]);
 
 ///Ejecuta cuando el input cambia
 //Agarra el valor(lo que escribio el usuario)
@@ -46,15 +50,25 @@ const summitSearch=(Input)=>{
   if(Input.key == "Enter") {
     let resultado = songs.find(s=> s.name == searchSong) 
     if(resultado){
+      
       setSongsResult([resultado])
     }
+  }
 }
-
-
-
-
-}
+  //
+  const agregarCancion = (song) =>{
+    let inPlaylist = myPlaylist.find(s => s.name === song.name);
+    if(inPlaylist){
+      alert("Esta cancion ya esta en tu playlist");
+      return true;
+    }
+    // console.log (song);
+    setMyPlaylist([...myPlaylist,song]);
+    
+  }
+  //songs=row recibe el row como songs//
   return (
+    <div>
     <Fragment> 
       <Grid container="bool" justify="center" alignItems="center" direction="column"></Grid>
       <Box m={5}>
@@ -80,10 +94,11 @@ const summitSearch=(Input)=>{
                 <TableCell align="left">Artista</TableCell>
                 <TableCell align="left">Album</TableCell>
                 <TableCell align="left">Duracion</TableCell>
-                <TableCell align="left">Agregar</TableCell>
+                <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
+
           {songsResult.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
@@ -93,13 +108,52 @@ const summitSearch=(Input)=>{
                 <TableCell align="left">{row.artist.name}</TableCell>
                 <TableCell align="left">{row.album}</TableCell>
               <TableCell align="left">{row.duration}</TableCell>
-                <TableCell align="left">Agregar</TableCell>
+                <TableCell align="left">
+                  <IconButton onClick = {() => agregarCancion(row)}> 
+                    {/* el botn llama a la funcion gregarcancion con todos los parametros del row */}
+                    <AddCircleIcon></AddCircleIcon>
+                  </IconButton>
+                </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
     </Fragment>
+    
+    <Fragment>
+
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+          <TableCell align="left">Nombre</TableCell>
+                <TableCell align="left">Artista</TableCell>
+                <TableCell align="left">Album</TableCell>
+                <TableCell align="left">Duracion</TableCell>
+                <TableCell align="left">Agregar</TableCell>
+
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {myPlaylist.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+            <TableCell align="left">{row.name}</TableCell>
+                <TableCell align="left">{row.artist.name}</TableCell>
+                <TableCell align="left">{row.album}</TableCell>
+              <TableCell align="left">{row.duration}</TableCell>
+                <TableCell align="left">voto</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+    </Fragment>
+    </div>
   );
 }
 
